@@ -7,7 +7,9 @@ export default function RootContextProvider({ children }){
 
     const loadIp = () => {
         let host = localStorage.getItem('euroscope-adress');
-        if (host) setIp(host);
+        host = JSON.parse(host)
+	console.log(host)
+	if (host !== null) setIp(host);
     }
 
     const loadSettings = () => {
@@ -19,7 +21,7 @@ export default function RootContextProvider({ children }){
     useEffect(() => {
         loadIp();
         //loadSettings();
-    }, [loadIp, loadSettings])
+    }, [loadIp])
 
     const defaultContext = {
         ip,

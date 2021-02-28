@@ -1,4 +1,4 @@
-import React, {useContext, useState } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import {
     Modal,
     Row,
@@ -14,8 +14,8 @@ export default function SettingsModal(props) {
     const [serverAdress, setServerAddress] = useState(commSettings?.address)
     const [key, setKey] = useState(commSettings?.key)
 
-    const [esIp, setESIp] = useState(ip)
-    
+    const [esIp, setESIp] = useState("")
+
     function makeid(length) {
         var result           = '';
         var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
@@ -43,10 +43,16 @@ export default function SettingsModal(props) {
 
     const saveIp = () => {
         setIp(esIp)
-        localStorage.setItem('euroscope-adress', esIp)
+        localStorage.setItem('euroscope-adress', JSON.stringify(esIp))
 
-        setTimeout(500, location.reload())
+        //setTimeout(500, window.location.reload())
     }
+
+    useEffect(() => {
+	setESIp(ip)
+    }, [setESIp])
+
+	console.log(esIp)
 
     return (
         <>
@@ -76,7 +82,6 @@ export default function SettingsModal(props) {
                         </Col>
                     </Row>
                     <Row className="mt-3">
-                        <Col>
                             <Col>
                                 <Form.Group controlId="euroscopeIp">
                                     <Form.Label>EuroScope Ip</Form.Label>
@@ -86,7 +91,6 @@ export default function SettingsModal(props) {
                             <Col className="button" xs={2}>
                                 <Button onClick={() => {saveIp()}}>IP-Adresse speichern und verbinden</Button>
                             </Col>
-                        </Col>
                     </Row>
                     <Row className="mt-3">
                         <Col>
