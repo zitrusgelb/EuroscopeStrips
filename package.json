@@ -9,12 +9,22 @@
     "axios": "^0.21.1",
     "bootstrap": "^4.6.0",
     "cra-template-pwa": "1.0.3",
+    "irc": "^0.5.2",
+    "moment": "^2.29.1",
+    "moment-timezone": "^0.5.33",
     "node-sass": "^5.0.0",
     "react": "^17.0.1",
+    "react-beautiful-dnd": "^13.0.0",
     "react-bootstrap": "^1.5.0",
     "react-dom": "^17.0.1",
+    "react-draggable": "^4.4.3",
+    "react-irc": "0.0.2",
+    "react-live-clock": "^5.0.16",
+    "react-moment": "^1.1.1",
     "react-router-dom": "^5.2.0",
-    "react-scripts": "4.0.3"
+    "react-scripts": "4.0.3",
+    "rfs": "^9.0.3",
+    "websocket": "^1.0.33"
   },
   "scripts": {
     "start": "react-scripts start",

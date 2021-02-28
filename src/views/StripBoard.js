@@ -5,66 +5,153 @@ import {
     Container
 } from 'react-bootstrap'
 import axios from 'axios'
+import Clock from 'react-live-clock';
 
 import { RootContext } from '../RootContext'
 import Strip from '../components/Strip'
+import SettingsModal from '../components/SettingsModal'
 
 export default function StripBoard() {
     const { ip } = useContext(RootContext)
 
-    const [visibleCallsigns, setVisibleCallsigns] = useState([])
-    const [notifiedCallsigns, setNotifiedCallsigns] = useState([])
-    const [assumedCallsigns, setAssumedCallsigns] = useState([])
+    const [planes, setPlanes] = useState([])
+
+    const [info, setInfo] = useState({station: 'EDWW_A_CTR'})
+
     const [runs, setRuns] = useState(0)
     //const [tokenSource] = useState(axios.CancelToken.source())
 
-    const loadCallsigns = (token) => {
+    var CancelToken = axios.CancelToken;
+    var cancel;
+
+    const loadCallsigns = () => {
         axios.post("http://"+ ip +":8484/api", {
             jsonrpc: '2.0',
             id: 1,
             method: 'getVisibleCallsigns'
-        })
-        .then(response =>{
-            setAssumedCallsigns(response.data.result[5]);
-            setNotifiedCallsigns(response.data.result[1])
+        },
+        {cancelToken: new CancelToken(function executor(c) {
+            // An executor function receives a cancel function as a parameter
+            cancel = c;
+          })}
+        )
+        .then(response => {
+            setPlanes([response.data.result[2], response.data.result[5], response.data.result[7], response.data.result[4].concat(response.data.result[3]), [], []])
         })
         .catch(err =>
             console.error(err)
         )
+        setTimeout(() => {loadCallsigns()}, 20000)
+        console.log(Date.now())
     }
 
     useEffect(() => {
-        if(runs > 10) return;
+        if(runs > 0) return
         loadCallsigns()
-        setRuns(runs + 1)
+        setRuns(runs+1)
     }, [loadCallsigns, runs, setRuns])
-   
+
+    const [settingsModal, setSettingsModal] = useState(false)
+
     return (
         <Container>
             <Row xs={3}>
                 <Col>
-                    <div className="p-0 strip-container">
-                    {notifiedCallsigns && notifiedCallsigns.map((nc, i) => 
-                        <Strip key={i} callsign={nc} ></Strip>
-                    )}
-                    </div>
+                    <Row className="bay">
+                        <div className="bay-title">INBOUND</div>
+                        <div className="p-0 strip-container bay-50">
+                            <div>
+                                {planes && planes[0] && planes[0].map((ib, bi) => 
+                                    <div key={bi}>
+                                        <Strip callsign={ib}></Strip>
+                                    </div>
+                                )}
+                            </div>
+                        </div>
+                    </Row>
+                    <Row className="bay">
+                        <div className="bay-title">OUTBOUND</div>
+                        <div className="p-0 strip-container bay-50">
+                            <div>
+                                {planes && planes[2] && planes[2].map((ib, bi) => 
+                                    <div key={bi}>
+                                        <Strip callsign={ib}></Strip>
+                                    </div>
+                                )}
+                            </div>
+                        </div>
+                    </Row>
                 </Col>
                 <Col>
-                    <div className="p-0 strip-container">
-                    {assumedCallsigns && assumedCallsigns.map((ac, i) => 
-                        <Strip key={i} callsign={ac} assigned ></Strip>
-                    )}
-                    </div>
+                    <Row className="bay">
+                        <div className="bay-title">HAND-OFF</div>
+                        <div className="p-0 strip-container bay-25">
+                            <div>
+                                {planes && planes[3] && planes[3].map((ib, bi) => 
+                                        <div key={bi}>
+                                            <Strip callsign={ib}></Strip>
+                                        </div>
+                                )}
+                            </div>
+                        </div>
+                    </Row>
+                    <Row className="bay">
+                        <div className="bay-title">ON FREQ</div>
+                        <div className="p-0 strip-container bay-75">
+                            <div>
+                                {planes && planes[1] && planes[1].map((ib, bi) => 
+                                        <div key={bi}>
+                                            <Strip callsign={ib} assigned></Strip>
+                                        </div>
+                                )}
+                            </div>
+                        </div>
+                    </Row>
                 </Col>
                 <Col>
-                    <div className="p-0 strip-container">
-                        Dies wird eine Dritte column
-                    </div>
+                    <Row className="bay">
+                    <div className="bay-title">ON FREQ</div>
+                        <div className="p-0 strip-container bay-50">
+                            <div>
+                                {planes && planes[4] && planes[4].map((ib, bi) => 
+                                        <div className="bay-title" key={bi}>
+                                           <Strip callsign={ib}></Strip>
+                                        </div>
+                                )}
+                            </div>
+                        </div>
+                        <Row className="bay">
+                            <div className="bay-title">ON FREQ</div>
+                            <div className="p-0 strip-container bay-50">
+                                <div>
+                                    {planes && planes[5] && planes[5].map((ib, bi) => 
+                                            <div className="bay-title" key={bi}>
+                                            <Strip callsign={ib}></Strip>
+                                            </div>
+                                    )}
+                                </div>
+                            </div>
+                        </Row>
+                    </Row>
                 </Col>
             </Row>
             <Row className="button-row">
-                Hier kommen Buttons rein
+                <div className="container">
+                    <div className="button"><span>NONLIVE</span></div>
+                    <div className="button"><span>TTD</span></div>
+                    <div className="button"><span>SET</span></div>
+                    <div className="button"><span>APL</span></div>
+                    <div className="button"><span>HOTKEY</span></div>
+                    <div className="button" onClick={() => setSettingsModal(true)}><span>SETTINGS</span></div>
+                    <div className="button"><span>NEW STRIP</span></div>
+                    <div className="info d-flex">
+                        <span className="station">POSTION</span>
+                        <span className="freq">FREQUENCY</span>
+                        <span className="time"><Clock format={'HH:mm:ss'} ticking={true} /></span>
+                        </div>            
+                </div>
             </Row>
+            <SettingsModal show={settingsModal} close={() => setSettingsModal(false)} info={info} />
         </Container>
     )
 }

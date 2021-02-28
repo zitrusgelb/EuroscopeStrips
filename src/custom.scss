@@ -1,3 +1,7 @@
+$theme-colors: (
+    "primary": #ffdfa6
+);
+
 @import url('https://fonts.googleapis.com/css2?family=Inconsolata:wght@400;500;600;700;800&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Indie+Flower&display=swap');
 
@@ -10,22 +14,21 @@ html, body {
     font-weight: 500;
     overflow: hidden;
     user-select: none !important;
+    font-size: 1rem;
 }
 
 .container {
     height: 100vh;
-    margin: 0 5px;
+    margin: 0;
     max-width: 100vw !important;
     padding: 0;
-    width: 97.9vw;
+    width: 100vw;
     > .row {
         flex-wrap: nowrap;
-        height: 90vh;
+        height: 85vh;
+        margin: 0;
         &.button-row {
-            background-color: #151515;
-            height: 10vh;
-            margin-left: 5px;
-            margin-right: -25px;
+            height: 15vh;
         }
         > .col {
             background-color: rgb(209, 213, 219);
@@ -33,12 +36,18 @@ html, body {
             align-content: flex-end;
             display: flex;
             flex-wrap: wrap;
-            height: 90vh;
             margin: 0 5px;
             overflow-y: auto;
-            padding: 0 15px;
+            padding: 0 5px;
             .strip-container {
                 flex-grow: 1;
+                padding-right: 5px !important;
+            }
+            &:first-child() {
+                margin-left: 0;
+            }
+            &:last-child() {
+                margin-right: 0;
             }
         }
     }
@@ -47,11 +56,74 @@ html, body {
     margin: 0;
 }
 
+.bay {
+    width: 100%;
+    > div {
+        display: block;
+        overflow: hidden;
+        overflow-y: auto;
+    }
+    .bay-50 {
+        width: 100%;
+        height: 37.2vh;
+    }
+    .bay-75 {
+        width: 100%;
+        height: 50vh;
+    }
+    .bay-25 {
+        width: 100%;
+        height: 24.3vh;
+    }
+}
+
+.button-row {
+    background-color: #d9d9d9;
+    border-top: 1px solid black;
+    .container {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: nowrap;
+        height: 15vh;
+        padding: 10px 0;
+        margin: 0 auto;
+        width: 66vw;
+        .button {
+            background-color: #ccc;
+            border: 1px solid black;
+            margin-left: 5px;
+            padding: 5vh 0;
+            text-align: center;
+            width: 7vw;
+        }
+        .info {
+            background-color: #fff;
+            border: 1px solid black;
+            display: flex;
+            flex-direction: column;
+            margin: 0 5px;
+            padding: 5px;
+            text-align: center;
+            width: 15vw;
+            .station {
+                font-size: 1.5rem;
+            }
+            .freq {
+                font-size: 0.75rem;
+            }
+            .time {
+                font-size: 2rem;
+                font-weight: 700;
+            }
+        }
+    }
+}
+
 .strip {
     background-color: #fff;
     border-bottom: 4px solid;
     border-top: 4px solid;
-    font-size: 17px;
+    font-size: 1.1rem;
     margin: 15px 0;
     padding: 0;
     width: 100%;
@@ -67,6 +139,9 @@ html, body {
     &.W {
         border-color: rgb(29, 78, 216);
     }
+    &#vfr {
+        border-color: rgb(0, 117, 16);
+    }
     .col, .col-6, .col-5, .col-4, .col-3, .col-2, .col-1 {
         border-left: 1px solid black;
         padding: 0;
@@ -77,6 +152,29 @@ html, body {
     }
     .col-1.buttons{
         max-width: 3.5% !important;
+    }
+    .h-55 {
+        height: 55px;
+    }
+    .waypoint {
+        display: flex;
+        align-items: center;
+    }
+    .copx {
+        bottom: 0;
+        position: absolute;
+    }
+    .copn {
+        position: absolute;
+        top: 0;
+    }
+    .next {
+        margin: auto 0;
+    }
+    .center {
+        display: flex;
+        align-items: center;
+        justify-content: space-evenly;
     }
 }
 
@@ -117,12 +215,60 @@ html, body {
             .action-btn {
                 border: 1px solid black;
                 padding: 10px 30px;
+                text-align: center;
             }
             .transfer .col-1 {
                 padding: 0;
             }
         }
+        &.clearance {
+            border: 1px solid black;
+            border-radius: 0px;
+            .modal-body {
+                padding: 0.5rem;
+                .header {
+                    border-bottom: 1px solid black;
+                    margin: 0 -0.5rem;
+                    p {
+                        text-align: center;
+                        width: 100%;
+                        margin-bottom: 0.5rem;
+                    }
+                }
+            }
+        }
+        &.settings {
+            border: 1px solid black;
+            border-radius: 0px;
+            .modal-body {
+                padding: 0.5rem;
+                .header {
+                    border-bottom: 1px solid black;
+                    margin: 0 -0.5rem;
+                    p {
+                        text-align: center;
+                        width: 100%;
+                        margin-bottom: 0.5rem;
+                    }
+                }
+                .button {
+                    margin: auto 0;
+                }
+                .form-label {
+                    padding-left: 0.5rem;
+                }
+            }
+        }
     }
+}
+
+.bay-title {
+    background-color: #ffdfa6;
+    font-size: 2em;
+    font-weight: 800;
+    height: 5vh;
+    text-align: center;
+    width: 100%;
 }
 
 .selected {
@@ -140,15 +286,15 @@ html, body {
 }
 
 .fs-xs {
-    font-size: 10px;
+    font-size: 0.6rem;
 }
 
 .fs-s {
-    font-size: 12px;
+    font-size: 0.8rem;
 }
 
 .fs-l {
-    font-size: 19px;
+    font-size: 1.2rem;
 }
 
 .fc-blue {
@@ -159,6 +305,10 @@ html, body {
     color:  rgb(220, 38, 38);
 }
 
+.fc-green {
+    color: rgb(0, 117, 16);
+}
+
 .scratch-pad {
     color: blue;
     font-family: 'Indie Flower';
@@ -167,4 +317,11 @@ html, body {
 
 .bg-main {
     background-color: rgb(209, 213, 219);
+}
+
+@include media-breakpoint-down(lg) {
+    .strip {font-size: 0.9rem;}
+    .fs-l{font-size: 0.9rem}
+    .fs-s{font-size: 0.6rem}
+    .fs-xs{font-size: 0.4rem}
 }
