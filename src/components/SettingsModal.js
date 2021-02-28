@@ -44,6 +44,8 @@ export default function SettingsModal(props) {
     const saveIp = () => {
         setIp(esIp)
         localStorage.setItem('euroscope-adress', esIp)
+
+        setTimeout(500, location.reload())
     }
 
     return (
