@@ -17,7 +17,7 @@ import TransferModal from '../components/TransferModal'
 import ClearanceModal from '../components/ClearanceModal'
 
 export default function Strip(props) {
-    const { ip } = useContext(RootContext)
+    const { ip, squawks } = useContext(RootContext)
 
     const [details, setDetails] = useState([])
     const [runs, setRuns] = useState(0)
@@ -98,7 +98,7 @@ export default function Strip(props) {
 
     const getFlightDir = () => {
         if(!details) return
-        if(runs > 3) return
+        if(runs > 0) return
         setFlightDir(details.direction)
         setRuns(runs + 1)
     }
@@ -108,7 +108,7 @@ export default function Strip(props) {
     }, [getFlightDir()])
 
     const specialSquawk = (ssr) => {
-        if (ssr === '7740') return "FIS"
+        return squawks[ssr]
     }
 
     return (
@@ -138,7 +138,10 @@ export default function Strip(props) {
                 </Row>
             </Col>
             <Col xs={3} onClick={() => {setTransferOpen(true); setTransferDetails(details)}} className="center">
-                <span className="fs-s">{details.type}</span> <span className="fs-l fw-b">{props.callsign}</span>
+                <span className="vt-t">{details.comm_type === "t" && details.comm_type}</span> 
+                <span className="fs-s">{details.type}</span> 
+                <span className="fs-l fw-b">{props.callsign}</span> 
+                {details.wtc === "H" && <span className="wtc-h">{details.wtc}</span>}
             </Col>
             <Col className="center">
                 <span>{details.adep}</span><span>{details.ades}</span>
@@ -170,7 +173,7 @@ export default function Strip(props) {
                             <span>.</span>
                         </Col>
                         <Col className="pl-0">
-                            <span></span>
+                            <span>.</span>
                         </Col>
                     </Row>
                 </Row>
@@ -197,22 +200,23 @@ export default function Strip(props) {
                     <Col className="border-0 pl-0" xs={1}>
                         {props.assigned && <>x</>}
                     </Col>
-                    <Col className="border-0" xs={2}>
+                    <Col className={details.wtc === "H" ? "border-0 wtc-h" : "border-0"} xs={2}>
                         {details.wtc}
                     </Col>
                 </Row>
                 <Row className="d-flex justify-content-center">
+                    {details.comm_type === "/t" && <span className="vt-t">{details.comm_type}</span>}
                     <span className="fs-l fw-b">{props.callsign}</span>
                 </Row>
                 <Row className="d-flex">
-                    <Col className="border-0 pl-0 fs-s fc-green d-flex align-items-center" xs={4}>{specialSquawk(details.squawk)}</Col>
+                    <Col className="border-0 pl-0 fs-s fc-green d-flex align-items-center text-uppercase" xs={4}>{specialSquawk(details.squawk)}</Col>
                     <Col className="border-0 pl-0" xs={3}>
                     {details.squawk}
                     </Col>
                     {details.ass_squawk !== details.squawk && <Col className="fc-red border-0 pl-1 fw-b" xs={3}>{details.ass_squawk}</Col>}
                 </Row>
                 <Row>
-                    <Col className="border-0 pl-0">RULE</Col>
+                    <Col className="border-0 pl-0">{details.flt_rule}</Col>
                     <Col className="border-0 pl-0 text-right pr-2">{details.fp_speed}</Col>
                 </Row>
             </Col>
@@ -239,8 +243,8 @@ export default function Strip(props) {
             </Col>
             </>
         }
-        <TransferModal show={transferOpen} details={transferDetails} close={() => {setTransferOpen(false); loadDetails()}} />
-        <ClearanceModal show={clearanceOpen} details={clearanceDetails} close={() => {setClearanceOpen(false); loadDetails()}} />
+        <TransferModal show={transferOpen} details={transferDetails}  controllers={props.controllers} close={() => {setTransferOpen(false); loadDetails()}} />
+        <ClearanceModal show={clearanceOpen} details={clearanceDetails} controllers={props.controllers} close={() => {setClearanceOpen(false); loadDetails()}} />
         </Row>
     }
     </>

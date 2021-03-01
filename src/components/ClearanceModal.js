@@ -19,6 +19,7 @@ export default function ClearanceModal(props) {
                     </p>
                 </Row>
                 <Row className="mt-3">
+                    
                 </Row>
             </Modal.Body>
         </Modal>

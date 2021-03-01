@@ -49,10 +49,9 @@ export default function SettingsModal(props) {
     }
 
     useEffect(() => {
-	setESIp(ip)
+	    setESIp(ip)
     }, [setESIp])
 
-	console.log(esIp)
 
     return (
         <>
