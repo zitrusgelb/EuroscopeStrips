@@ -207,7 +207,7 @@ export default function StripBoard() {
                     <div className="info d-flex">
                         <span className="station">{info.station}</span>
                         <span className="freq">{info.frequency}</span>
-                        <span className="time"><Clock format={'HH:mm:ss'} ticking={true} /></span>
+                        <span className="time"><Clock format={'HH:mm:ss'} ticking={true} timezone={'UTC'}/></span>
                         </div>            
                 </div>
             </Row>

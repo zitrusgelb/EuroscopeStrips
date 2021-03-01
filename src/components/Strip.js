@@ -243,8 +243,8 @@ export default function Strip(props) {
             </Col>
             </>
         }
-        <TransferModal show={transferOpen} details={transferDetails}  controllers={props.controllers} close={() => {setTransferOpen(false); loadDetails()}} />
-        <ClearanceModal show={clearanceOpen} details={clearanceDetails} controllers={props.controllers} close={() => {setClearanceOpen(false); loadDetails()}} />
+        <TransferModal show={transferOpen} details={transferDetails} controllers={props.controllers} close={() => {setTransferOpen(false); loadDetails()}} />
+        <ClearanceModal show={clearanceOpen} details={clearanceDetails} assigned={props.assigned} runway={runway} controllers={props.controllers} close={() => {setClearanceOpen(false); loadDetails()}} />
         </Row>
     }
     </>

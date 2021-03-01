@@ -350,6 +350,72 @@ html, body {
                         margin-bottom: 0.5rem;
                     }
                 }
+                .cfl, .xfl {
+                    height: 75vh;
+                    overflow: auto;
+                    &::-webkit-scrollbar {
+                        display: none;
+                    }
+                    .alt, .title {
+                        border: 1px solid black;
+                        border-top: none;
+                        padding: 5px;
+                        text-align: center;
+                        &:first-child(), &:nth-child(2) {
+                            border-top: 1px solid black;
+                        }
+                    }
+                    .spacer {
+                        border-bottom: 1px solid black;
+                    }
+                }
+                .form-check {
+                    line-height: 0;
+                    input {
+                        margin: 0;
+                        pointer-events: none;
+                    }
+                }
+                .rate {
+                    text-align: center;
+                    td {
+                        border-color: black;
+                    }
+                }
+                .spad {
+                    height: 2rem;
+                    div {
+                        height: 103%;
+                        background-color: white;
+                    }
+                    span {
+                        left: 91%;
+                        position: absolute;
+                    }
+                }
+                .points {
+                    span {
+                        height: 1.5rem;
+                        text-align: center;
+                    }
+                }
+                .waypoints {
+                    span {
+                        font-size: 1.5rem;
+                        padding: 5px 0;
+                        text-align: center;
+                        &.w-50 {
+                            width: 45% !important;
+                        }
+                    }
+                    
+                }
+                .qnh {
+                    border: 1px solid black;
+                    font-size: 2rem;
+                    margin-bottom: 5px;
+                    padding: 5px 15px;
+                }
             }
         }
         &.settings {
